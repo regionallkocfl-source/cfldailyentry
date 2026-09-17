@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0d6b3f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <title>CFL Daily Data Input</title>
+  <style>
+    *{box-sizing:border-box} html,body{margin:0;width:100%;height:100%;font-family:Segoe UI,Roboto,Arial,sans-serif;background:#eef3f0;overflow:hidden}
+    #appFrame{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff;display:none}
+    #splash,#errorBox{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;background:#eef3f0;z-index:10}
+    #errorBox{display:none}.card{width:min(390px,92vw);background:#fff;border:1px solid #d7e0db;border-radius:16px;padding:24px;text-align:center;box-shadow:0 8px 26px rgba(0,0,0,.08)}
+    .logo{width:72px;height:72px;margin:0 auto 14px;border-radius:18px;background:#0d6b3f;padding:8px}.logo img{width:100%;height:100%;display:block}
+    h1{font-size:21px;color:#0d6b3f;margin:0 0 6px}p{font-size:13px;line-height:1.5;color:#67736c;margin:0}.spinner{width:30px;height:30px;border:3px solid #d6e4dc;border-top-color:#0d6b3f;border-radius:50%;margin:18px auto 0;animation:spin .85s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}.admin-note{margin-top:14px;text-align:left;background:#f5f8f6;border:1px solid #dfe8e3;border-radius:8px;padding:10px;font-size:12px;color:#4e5a53}code{overflow-wrap:anywhere}
+  </style>
+</head>
+<body>
+<div id="splash"><div class="card"><div class="logo"><img src="icons/icon.svg" alt=""></div><h1>CFL Daily Data Input</h1><p>Opening secure field data-entry app…</p><div class="spinner"></div></div></div>
+<div id="errorBox"><div class="card"><div class="logo"><img src="icons/icon.svg" alt=""></div><h1>App URL not configured</h1><p>Admin needs to set the deployed Google Apps Script <b>/exec</b> URL once before uploading this folder to GitHub.</p><div class="admin-note">Open <b>index.html</b> and replace:<br><br><code>PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE</code></div></div></div>
+<iframe id="appFrame" allow="camera *; geolocation *; microphone *; clipboard-read *; clipboard-write *" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+<script>
+  const APP_URL = 'https://script.google.com/macros/s/AKfycbzH-nS1qw_VqbvPjss_UqpYTUi49PwYqqMmRam_6RA4G7wthBPbvIH8JNHD8ndECIL_/exec';
+  const splash=document.getElementById('splash'), errorBox=document.getElementById('errorBox'), frame=document.getElementById('appFrame');
+  function validAppUrl(url){return /^https:\/\/script\.google\.com\/macros\/s\/[^\/]+\/exec(?:\?.*)?$/i.test(String(url||'').trim());}
+  function openApp(){if(!validAppUrl(APP_URL)){splash.style.display='none';errorBox.style.display='flex';return;} frame.src=APP_URL;frame.style.display='block';frame.addEventListener('load',()=>splash.style.display='none',{once:true});setTimeout(()=>splash.style.display='none',8000);}
+  if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(console.error));}
+  window.addEventListener('load',openApp);
+</script>
+</body>
+</html>

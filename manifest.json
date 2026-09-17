@@ -1,0 +1,14 @@
+{
+  "name": "CFL Daily Data Input",
+  "short_name": "CFL Data",
+  "description": "Centre for Financial Literacy - Daily Data Entry",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#eef3f0",
+  "theme_color": "#0d6b3f",
+  "icons": [
+    {"src":"icons/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
